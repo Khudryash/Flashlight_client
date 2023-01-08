@@ -6,15 +6,19 @@ import threading
 
 def server_messages_handler():
     while True:
-        msg = client.recv(2048)
-        if msg:
-            message = json.loads(msg.decode(FORMAT))
-            if message["command"] == "ON":
-                flashlight.on()
-            elif message["command"] == "OFF":
-                flashlight.off()
-            elif message["command"] == "COLOR":
-                flashlight.color(message["metadata"])
+        try:
+            msg = client.recv(2048)
+            if msg:
+                message = json.loads(msg.decode(FORMAT))
+                if message["command"] == "ON":
+                    flashlight.on()
+                elif message["command"] == "OFF":
+                    flashlight.off()
+                elif message["command"] == "COLOR":
+
+                    flashlight.color(message["metadata"])
+        except OSError:
+            break
 
 SERVER = "192.168.1.70"
 PORT = 7000
